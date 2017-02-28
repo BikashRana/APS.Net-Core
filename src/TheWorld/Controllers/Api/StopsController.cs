@@ -60,24 +60,24 @@ namespace TheWorld.Controllers.Api
 
 
                     //Lookup the Geocodes
-                    var result = await _coordsService.GetCoordsAsync(newStop.Name);
-                    if (!result.Success)
-                    {
-                        _logger.LogError(result.Message);
-                    }
-                    else
-                    {
-                        newStop.Latitude = result.Latitude;
-                        newStop.Longitude = result.Longitude;
+                    //var result = await _coordsService.GetCoordsAsync(newStop.Name);
+                    //if (!result.Success)
+                    //{
+                    //    _logger.LogError(result.Message);
+                    //}
+                    //else
+                    //{
+                    newStop.Latitude = 0.0;// result.Latitude;
+                    newStop.Longitude = 0.0; // result.Longitude;
 
-                        //Save to the Database
-                        _repository.AddStop(tripName, newStop, User.Identity.Name);
+                    //Save to the Database
+                    _repository.AddStop(tripName, newStop, User.Identity.Name);
 
-                        if (await _repository.SaveChangesAsync())
-                        {
-                            return Created($"/api/trips/{tripName}/stops/{newStop.Name}", Mapper.Map<StopViewModel>(newStop));
-                        }
+                    if (await _repository.SaveChangesAsync())
+                    {
+                        return Created($"/api/trips/{tripName}/stops/{newStop.Name}", Mapper.Map<StopViewModel>(newStop));
                     }
+                    //}
                 }
             }
             catch (Exception ex)
